@@ -1,0 +1,23 @@
+# Secrets — never commit
+.env
+*.key
+
+# Private demo-video script — not for the submission repo
+script.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Model / training outputs (produced in Colab)
+results/
+checkpoint-*/
+*.bin
+*.safetensors
+
+# OS / editor
+.DS_Store
+.ipynb_checkpoints/
