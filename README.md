@@ -298,18 +298,3 @@ discourse, didn't need that signal — which is why it beat the fine-tuned model
    `analysis` because of the word "xG"; **I overrode those to `reaction`** under the
    dominant-intent rule (edge-case B) and corrected its notes. I reviewed 100% of suggestions
    and hand-corrected every disagreement before it entered the dataset.
-
-**Annotation-assistance disclosure:** Claude produced *draft* labels/notes on raw batches, but
-no AI-generated label was accepted without human review; all gold labels are human-confirmed.
-
----
-
-## Appendix — Presentation script (3:30)
-
-| Timing | Segment | Spoken text |
-| --- | --- | --- |
-| **0:00–0:40** | **Introduction** | Hello. Today I'm presenting TakeMeter, an AI engineering project that classifies the quality of discourse in an online football community, the Premier League subreddit. Public discourse is messy, subjective, and unstructured. My goal was to build a fine-tuned text classifier that separates deep analytical contributions from bold unbacked opinions and from purely emotional reactions. |
-| **0:40–1:20** | **Taxonomy & Data** | The system rests on a clean taxonomy of three labels: analysis, hot take, and reaction. I harvested over two hundred real comments using the PullPush API, then annotated them against strict decision rules — the key rule being that a post only counts as analysis if it cites specific, checkable evidence. One real challenge surfaced early: genuine emotional reactions are rare in this subreddit, so even after a targeted second scrape, reaction was only about twenty percent of the data. I split everything into stratified training, validation, and test sets. |
-| **1:20–2:10** | **Modeling & Baseline** | For the baseline I prompted a zero-shot large language model, Llama three point three seventy billion through Groq, using only my taxonomy definitions. Then I fine-tuned DistilBERT on a T4 GPU in Google Colab for three epochs at a learning rate of two times ten to the minus five, selecting the best checkpoint by weighted F1. |
-| **2:10–3:00** | **Evaluation & Error Analysis** | The result was the opposite of what I expected. The zero-shot baseline scored sixty-eight percent accuracy and the fine-tuned model only fifty-seven. The fine-tuned model completely failed on the reaction class, scoring zero F1 — it never learned a category it had only about twenty-six training examples for, while the large language model handled reactions perfectly. My error analysis showed the fine-tuned model defaulting to the analysis label and keying on surface cues like the word "xG" and post length, rather than judging whether a claim was actually backed. |
-| **3:00–3:30** | **Reflections** | The honest takeaway is that fine-tuning a small model on a small, imbalanced dataset lost to a large model that already understands football language. The specification was critical — it stabilized my annotation rules and correctly predicted the analysis-versus-hot-take boundary as the hard case. If I expanded this, I would gather far more reaction examples and harder boundary cases instead of letting the model lean on jargon. Thank you for your time. |
